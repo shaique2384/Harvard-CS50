@@ -36,7 +36,7 @@ if False:
     print(f'Hello, {name}')
 
 # we can also do this, more concise,
-if False:
+if True:
     import re
 
     name = input("What's your name? "). strip()

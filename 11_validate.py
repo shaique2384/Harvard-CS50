@@ -71,7 +71,7 @@ A|B[either A or B]
 (?:...)[non-capturing version]
 '''
 
-if False:
+if True:
     import re
     email = input('What is your email address? ').strip()
     # Get rid of the white spaces but we gotta pass in white spaces so we don't need strip() function in the input, but let's include lower() to force the input to be lowercase
