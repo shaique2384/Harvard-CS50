@@ -123,7 +123,7 @@ if False:
 """
 # The above json file text is designed by an enginner of itunes who decided the design of the dataset. We can manipulate after we download it of course, but that is how itunes server works
 
-if True:
+if False:
     import json
     import requests                                         # To make those http or s requests
     import sys                                              # Importing sys library to input command line arguments like spacification of the band I want to search for
@@ -152,3 +152,5 @@ if True:
 # It's better to create a package of my frequently used codes in a package rather ctrls + v ing every time.
 # We can keep it local on our local machine but also we can go through steps, bundle it up and make it open source and share it to the cloud and servers so that people can download it from pypi url.
 
+import cowsay
+cowsay.cow("With love and respect, world")
