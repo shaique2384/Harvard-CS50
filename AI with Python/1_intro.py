@@ -92,4 +92,3 @@ if False:
 ## If the node at the brink of removal contains the goal state, return the solution
 ## We will figure that out by applying the goal test
 
-

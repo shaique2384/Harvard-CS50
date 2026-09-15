@@ -324,63 +324,246 @@ if False:
 # now let's create our own method, real utility of the class objects
 # Let's us now create their patronous
 
-def main():
-    student = get_student()
-    print(student, student.charm(), sep='')
+if False:
+    def main():
+        student = get_student()
+        print(student, student.charm(), sep='')
+        # In student.charm() , charm() is a method which is now associated with our object student same way capitalize() is associated with str by python developer
+        # __init__() and __str__() methods are are called automatically but our custom method has to be called
+        # It is similar to the way we can access the individual attributes or variables with a dot
 
-def get_student():
-    name = input('name: ').lower().capitalize()
-    house = input('house: ').lower().capitalize()
-    # Classes not only have instance variables they can also have functions built in aka method
-    # A function that is associated with a class is called a method
-    # Now we are at the brink of creating functionality within our student object
-    # Let's create a function called charm()
-    patronus_emojis = {
-                'Stag': '🦌',
-                'Otter': '🦦',
-                'Doe': '🦌',
-                'Phoenix': '🕊️',
-                'Jackrabbit': '🐇'
-            }
-    patronus = input(f'choose a patronus from {patronus_emojis}: ').lower().capitalize()
-    return Student(name, house, patronus)
+    def get_student():
+        name = input('name: ').lower().capitalize()
+        house = input('house: ').lower().capitalize()
+        # Classes not only have instance variables they can also have functions built in aka method
+        # A function that is associated with a class is called a method
+        # Now we are at the brink of creating functionality within our student object
+        # Let's create a function called charm()
+        patronus_emojis = {
+                    'Stag': '🦌',
+                    'Otter': '🦦',
+                    'Doe': '🦌',
+                    'Phoenix': '🕊️',
+                    'Jackrabbit': '🐇'
+                }
+        patronus = input(f'choose a patronus from {patronus_emojis}: ').lower().capitalize()
+        return Student(name, house, patronus)
 
-class Student:
-    def __init__(self, name, house, patronus):
-        if not name:
-            raise ValueError('Missing name')
+    class Student:
+        # The indented methods are all under class typology of Student
+        # By convention each of the methods will pass in at least one argument self by default which is a reference to the current object
+        def __init__(self, name, house, patronus):
+            if not name:
+                raise ValueError('Missing name')
+            houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+            if house not in houses:
+                raise ValueError('Invalid house')
+            self.name = name
+            self.house = house
+            self.patronus = patronus
+
+        def __str__(self):
+            return f'{self.name} from {self.house} says,\n \'EXPECTO PETRONUM\''
+
+        # Classes not only have instance variables they can also have functions built in aka method
+        # A function that is associated with a class is called a method
+        # Now we are at the brink of creating functionality within our student object
+        # Let's create our function charm()
+        def charm(self):
+            # As it's a method inside of a class, by convention it must take at least one argument, for instance self
+            # We will implement charm in such a way so that the method returns an emoji that's appropriate for each student's patronus
+            match self.patronus:
+                case 'Stag':
+                    return '🦌'
+                case 'Otter':
+                    return '🦦'
+                case 'Phoenix': 
+                    return '🕊️'
+                case 'Jackrabbit': 
+                    return '🐇'
+                # we use _ for default or any
+                case _:
+                    return '🪄'
+                # Let's now go to main() block
+            #return patronus_emojis.get(self.patronus, '✨')
+            # Emojis are just characters, it's a mapping of numbers to letters known as unicodes 
+
+
+    if __name__ == "__main__":
+        main()
+
+# Let's define charm with conditionals as opposed to matches
+if False:
+    def main():
+        student = get_student()
+        print(student, student.charm(), sep='')
+
+    def get_student():
+        name = input('name: ').lower().capitalize()
         houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
-        if house not in houses:
-            raise ValueError('Invalid house')
-        self.name = name
-        self.house = house
-        self.patronus = patronus
+        house = input(f'pick a house from {houses}: ').lower().capitalize()
+        patronus_emojis = [
+                    'Stag',
+                    'Otter',
+                    'Doe',
+                    'Phoenix',
+                    'Jackrabbit'
+                ]
+        patronus = input(f'choose a patronus from {patronus_emojis}: ').lower().capitalize()
+        return Student(name, house, patronus)
 
-    def __str__(self):
-        return f'{self.name} from {self.house} says, \n \'EXPECTO PETRONUM\''
+    class Student:
+        def __init__(self, name, house, patronus):
+            if not name:
+                raise ValueError('Missing name')
+            houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+            if house not in houses:
+                raise ValueError('Invalid house')
+            self.name = name
+            self.house = house
+            self.patronus = patronus
 
-    # Classes not only have instance variables they can also have functions built in aka method
-    # A function that is associated with a class is called a method
-    # Now we are at the brink of creating functionality within our student object
-    # Let's create our function charm()
-    def charm(self):
-        # As it's a method inside of a class, by convention it must take at least one argument, for instance self
-        # We will implement charm in such a way so that the method returns an emoji that's appropriate for each student's patronus
-        match self.patronus:
-            case 'Stag':
+        def __str__(self):
+            return f'{self.name} from {self.house} says,\n\'EXPECTO PETRONUM\''
+
+        def charm(self):
+            if self.patronus == 'Stag':
                 return '🦌'
-            case 'Otter':
+            elif self.patronus == 'Otter':
                 return '🦦'
-            case 'Phoenix': 
+            elif self.patronus == 'Phoenix': 
                 return '🕊️'
-            case 'Jackrabbit': 
+            elif self.patronus == 'Jackrabbit': 
                 return '🐇'
-            # we use _ for default or any
-            case _:
+            else:
                 return '🪄'
-            # Let's now go to main() block
-        #return patronus_emojis.get(self.patronus, '✨')
 
+    if __name__ == "__main__":
+        main()
 
-if __name__ == "__main__":
-    main()
+# Let's for now remove patronus to make our world simpler and focus on some other core capabilities of classes
+if False:
+    def main():
+        student = get_student()
+        # At this moment our use of classes is not very robust, let's create an issue by assign values to student.house even tho the fact check has been done before
+        #student.house = 'Number Four, Privet Drive'
+        # So we still have scope to break it
+        # Let's introduce prperties, an attribute that has more defense mechanism put into place, a little more functionality
+        # It's still an attribute but more functionality provided by the programmer after using some functionality
+        # Let's use @property whcih technically a function in python where we will see some new at syntax to decorate the functions
+        # A term of art, fecorater, a kind of function that modifies the behavior of other functions
+        # Let's now go to the class Student block and def a function called house()
+        print(student, '!', sep='')
+
+    def get_student():
+        name = input('name: ').lower().capitalize()
+        houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+        house = input(f'pick a house from {houses}: ').lower().capitalize()
+        return Student(name, house)
+
+    class Student:
+        def __init__(self, name, house):
+            # Check it out, name, house arguments are for the functions coming outside the class block and from the block where Student() function is being used
+            self.name = name
+            self.house = house
+
+        def __str__(self):
+            return f'{self.name} from {self.house}'
+
+        @property
+        def name(self):
+            return self._name 
+
+        @name.setter
+        def name(self, name):
+            if not name:
+                raise ValueError('Missing name')
+            # We don't need to use else: these days
+            self._name = name
+
+        @property
+        ## Getter is simply a function for a class that gets some attributes
+        ## It returns
+        def house(self):
+            # we are simply going to return self.house
+            return self._house
+            # now let's create another def house() which is a setter
+
+        @house.setter
+        # Setter is a function that sets some values or assign some values
+        ## It assigns
+        ## It takes two arguments because it needs to assign the other one
+        def house(self, house):
+            houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+            if house not in houses:
+                raise ValueError('Invalid house')
+            self._house = house
+        # We are simply trying to prevent progeammers from circumventing my error checking which happened in the def main() block of this code
+        # Let's somehow require that in order to access an attribute one must go through some function
+        # Also is order to set some attribute we also go through some function, like our getter and setter functions in this case
+        # Once we have a function, those are just actions and verbs that we can create ourselves and we can putt any necessary error corrections in these functions
+        # Because it's code that's gonna get executed top to bottom
+        # Now in the main() block during calling this random assignment 'student.house = 'Number Four, Privet Drive'' python will remember an assignment happening,
+        ## The very assignment in the setter regarding the .house attribute in def house(self, house) includeing the error check conditional.
+        # It's a function by itself outside of def __init__(self, name, house) where we just constructed the attribute
+        # In def house(self, house) block we back propagated from our conditional self.house assignment to the definition of house() function or the functionality of the .house attribute
+        # The functionality remains firmly within returning self.house and fact-checking the assignment of self.house anywhere outside the calss Student block.
+        # Additional note, Fact checking of self.house and assigning of our local variable house into self.house is happening in the def __init__() construction block so it's summoned upon in def get_student() block instead of main() block
+        # Hence house(self) is the getter function and house(self, house) is the setter functions regardless of us using it explicitly in the code
+        
+    # Now let's utilize python decorator @property in place of note #setter and @house.setter in place of note #getter
+    # We must name the function exactly exactly like we would like the property to be called, the atrribute in question, 'house'
+    # Last tweak, we dont need an extra error checks in the __init__() block because our setter function is going to be called there when we assign house to self.house
+    # Now we can keep all our errorchecking in one place in the setter, and it will be utilized more comprehensively as we witnessed
+    # We already have attributes (instance variables) name as well as house, which is gonna collide when we define the function house()
+    # The contradiction would be between calling the instance variable to be the house or the function to be called house
+    # Python's gonna confuse one for the other
+    # The CONVENTIONAL fix for this is to use _ like this self._house in both the @property and @house.setter blocks
+    # Now technically inside these property blocks our instance variable is _house and our attribute is house
+    # We are defending the data everywhere in the code this way, nothing can bypass our error check
+    # Let's now do the same thing with .name
+    # The same mistake can be repeatable if we reassign in the main block using student._house.
+    # So the convention is if it starts with an underscore, leave it alone, please don't touch this
+    # If there is two underscores, then please don't touch it even more
+
+    if __name__ == "__main__":
+        main()
+
+# Fun fact int has been a class always lol
+# class int(x, base=2,10,16) will always return to us an object called int
+# str has also been classes from the first week, class str(object='')
+# str.lower(), str.strip([chars]) were the mothods for str objects
+# lists possible to create with [] or list() is a class by itself, class list([iterable])
+# list class takes as per its __init__() and iterable, elements separated by commas like a set from math
+# For list.append(x) we have been using a method from under its class block that let's us append smth into the current list aka self
+
+# Dictionary has always been an object as well, if.e, class dict
+#print(type(50))
+# This is gonna print out the datatype of that value
+# type(object) -> the object's type
+# type(name, bases, dict, **kwds) -> a new type
+# It printed <class 'int'>
+#A = [50, 10, 9]
+#print(type(A))
+# terminal: <class 'list'>
+#print(type([]))
+# terminal: <class 'list'>
+#print(type(list()))
+#A = list([50, 10, 9])
+#print(type(A))
+# terminal: <class 'list'>
+#print(type({}))
+# terminal: <class 'dict'>
+# Same dict() function like list() function
+#(type(dict()))
+# terminal: <class 'dict'>
+# They all have been there the whole time, we didn't just call it a class yet
+
+# there is another method out there called class methods
+# It is not necessary or sensible to associate a functiona with object of a class but rather to the class
+# Object of a class is a very specific incarnation
+# Sometimes we want to associate a functiona to a class itself no matter what the object is 
+# for that we have a keyword callef @classmethod, another decorator
+# It's another function that we can use to specify that this method is not by default implicitly an instancemethod that has access to self.
+# This is a class method that does not have access to the self but it knows which class it is inside
+# Let's terminal code 12.2_hat.py
