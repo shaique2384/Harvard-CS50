@@ -310,7 +310,7 @@ if False:
             def __str__(self):
                 # This one takes only one argument, the self. Pretty selfish method.
                 # Let's return a student!
-                #return 'a student! ^_^'
+                # return 'a student! ^_^'
                 # Now let's just simply return an f'str'
                 # Remember 'return' returns only one str 
                 return f"{self.name} is from {self.house}"
@@ -530,6 +530,7 @@ if False:
         main()
 
 # Fun fact int has been a class always lol
+# docs.python.org/3/library/functions.html#int
 # class int(x, base=2,10,16) will always return to us an object called int
 # str has also been classes from the first week, class str(object='')
 # str.lower(), str.strip([chars]) were the mothods for str objects
@@ -567,3 +568,198 @@ if False:
 # It's another function that we can use to specify that this method is not by default implicitly an instancemethod that has access to self.
 # This is a class method that does not have access to the self but it knows which class it is inside
 # Let's terminal code 12.2_hat.py
+
+# Now we have come back from 12.2_hat.py to simplify and let's get rid of  the decorators @property and @name.setter
+# It's not because something is wrong with the decorator, it's more like we want to revisit some of the key ideas when we began the program with
+if False:
+    def main():
+        print(Student(), '!', sep='')
+
+    '''def get_student():
+        name = input('name: ').lower().capitalize()
+        houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+        house = input(f'pick a house from {houses}: ').lower().capitalize()
+        return Student(name, house)'''
+
+    # Theoretically hese are all of our student specific functionality
+    # When programmers want to explore the student specific functions they would know here they are bundled up
+    # In that logic why is that we have a separate def get_student(): block residing independently outside of the class block? Weird, huh.
+    # It's a little stinky, it's called code smell
+    class Student:        
+        def __init__(self):
+            self.name = input('name: ').lower().capitalize()
+            houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+            self.house = input(f'pick a house from {houses}: ').lower().capitalize()
+
+        def __str__(self):
+            return f'{self.name} from {self.house}'
+
+    if __name__ == "__main__":
+        main()
+
+# We can also use class method, duh!
+if False:
+    class Student:
+
+        def __init__(self, name, house):
+            self.name = name
+            self.house = house
+
+        def __str__(self):
+            return f'{self.name} from {self.house}'
+
+        @classmethod
+        # Inside the student class we now have a get() which is a class method, so it shall be called independent of deploying __init__(): method
+        # We can call this method without even insantiating a student object first
+        # Also it's advised to move the class block altogether to a separate file and import it.
+        def get(cls):
+            name = input('Name: ').lower().capitalize()
+            if not name:
+                raise ValueError
+            houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+            houses_string = ''
+            for i, h in enumerate(houses):
+                if i >= 3:
+                    houses_string = houses_string+f'and {h}'
+                else:
+                    houses_string = houses_string+f'{h}, '
+            house = input(f'pick a house from {houses_string}: ').lower().capitalize()
+            if house not in houses:
+                raise ValueError
+            # Let's return cls(name, house), look how name and house above gets lit up
+            return cls(name, house)
+            ##print(cls(name, house))
+            # Let's add header, @classmethod which solves the chicken and the egg problem so to speak
+
+    def main():
+        
+        # get() requires at least one argument that is the name of the class itself , remaining of the block is same as before when we had def get_student() above main() tree
+        # This way we can instantiate a student object by simply using cls, that passed in, we dont need to assign student objects into a local variable like before.
+        print(Student.get())
+        # We don't have to pass in an input to get() as the user input taking is happening in the @classmethod block
+        ##Student.get()
+        # We can simply call the class method get() by attaching it to the cls at issude here, Student with a capital S.
+
+        # the student object creation can also happen as long as there are __init__() method, we can store it using the get() method i.e,
+        s = Student.get()
+        print(s.house)
+        # Also it is important to note that class Student: will be present even if there is nothing except a placeholder with three dots.
+        # The way we started our lesson at the very first time.
+
+    if __name__ == '__main__':
+        main()
+
+#Question for Jarvis
+if False:
+    class Student:
+
+        def __init__(self, name, house):
+            self.name = name
+            self.house = house
+        def __str__(self):
+            return f'{self.name} from {self.house}'
+
+        @classmethod
+        def get(cls):
+            name = input('Name: ').lower().capitalize()
+            if not name:
+                raise ValueError
+            houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+            houses_string = ''
+            for i, h in enumerate(houses):
+                if i >= 3:
+                    houses_string = houses_string+f'and {h}'
+                else:
+                    houses_string = houses_string+f'{h}, '
+            house = input(f'pick a house from {houses_string}: ').lower().capitalize()
+            if house not in houses:
+                raise ValueError
+            return cls(name, house)
+
+    def main():
+        print(Student.get())
+
+        # Problem area, I had to copy and paste from @classmethod block
+        '''
+        name = input('Name: ').lower().capitalize()
+        if not name:
+            raise ValueError
+        houses = ['Gryffindor', 'Hufflepuff', 'Slytherin', 'Ravenclaw']
+        houses_string = ''
+        for i, h in enumerate(houses):
+            if i >= 3:
+                    houses_string = houses_string+f'and {h}'
+            else:
+                houses_string = houses_string+f'{h}, '
+        house = input(f'pick a house from {houses_string}: ').lower().capitalize()
+        if house not in houses:
+            raise ValueError
+        # I had to do all just to define the object s.
+        # My question is can I utilize the @classmethod instantiation to still use the object specific functionality?
+        '''
+        # Jarvis answered   
+        # Call the class method and store the returned Student instance in 's'
+        s = Student.get()
+
+        # Now 's' is a fully instantiated Student object
+        print(s)  # Calls __str__: prints "Name from House"
+        print(s.house)  # Accesses the house attribute directly
+        print(s.name)  # Accesses the name attribute directly
+
+    if __name__ == '__main__':
+        main()
+
+# Much Cleaner version from Gervais
+if False:
+    class Student:
+
+        def __init__(self, name, house):
+            self.name = name
+            self.house = house
+
+        def __str__(self):
+            return f"{self.name} from {self.house}"
+
+        @classmethod
+        def get(cls):
+            name = input("Name: ").strip().capitalize()
+            if not name:
+                raise ValueError("Name cannot be empty.")
+
+            houses = ["Gryffindor", "Hufflepuff", "Slytherin", "Ravenclaw"]
+            houses_string = ", ".join(houses[:-1]) + f", and {houses[-1]}"
+            # The string whose method is called is inserted in between each iterated string resulting in a returned new string.
+            # Negative indexing allows one to access elements from the end of a list, rather than starting from the beginning.
+
+            house = input(f"Pick a house from {houses_string}: ").strip().capitalize()
+            if house not in houses:
+                raise ValueError("Invalid house selected.")
+
+            # Instantiates and returns the Student object
+            return cls(name, house)
+
+
+    # Rhis way when we keep methods under the @classmethod decorator even thowgh we create mulple objects, the name variable assignment will happen once and for all
+    # In contranst when we define get() method outside of @classmethod decorator independently or inside def __init__() block, it's an object method.
+    # It is creating thus multiple copies of the same varaibles for each objects which would be memory heavy for a huge number of objects.
+    def main():
+        # Standard Instantiation with this below or local variables for input
+        s1 = Student('Shiku', 'Slytherin')
+        # Obtain the object via the factory class method
+        s2 = Student.get()
+ 
+        # Access both the string representation and instance attributes of both objects
+        print(s1, s2)
+        print(f"Automatically selected House: {s1.house}")
+        print(f"Selected House: {s2.house}")
+        # When we print the obejct by using class method get() factory instantiation we get to use the __str__() which is an object method
+        
+
+    if __name__ == "__main__":
+        main()
+
+# There are other kind of decorators such as @staticmethod and so on.
+# There is yet another one of the most compelling features of oop we haven't yet used explicitly nut turns out we have seen them impilicitly over the past weaks is the notion of heritance
+# It turns out in the oop there is this oportunity to design these classes hierchical fashion whereby we can have one class inherit from or borrow attributes that is methods or variables from another class *if they all have those in common.
+# to demonstrate that let's terminal code 12.2_wizard.py
+
