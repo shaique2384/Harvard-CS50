@@ -85,6 +85,8 @@ def main():
     #for _ in str_list:
         #print(_)
 
+    
+
 # We can have multiple layer of super class like super super class
 # When we subclass a superclass with inputing the superclass name in the class header we actually inherit all the attributes
 # We can also override some attributes 
@@ -174,5 +176,10 @@ BaseException
     import random
     str = random.choice(str_list)
     print(str)
+#dis.dis(main)
 
-dis.dis(main)
+# Clasees have features that we are taking for granted for weeks now for example operator overloading
+# We can take very common symbols like plus or minus or other such syntax on the keyboard and we can implement our own interpretation thereof.
+# Plus does not have to equal addition even in default python plus also means concatenation.
+# This is called overloading i.e, oveloaded by the authors of python so that we can use the same symbol way but with a different data types to solve slightly different problems.
+# Let's create a new final file called vault so let's terminal code 13_vault.py
