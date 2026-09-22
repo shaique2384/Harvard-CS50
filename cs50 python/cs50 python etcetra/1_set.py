@@ -91,4 +91,4 @@ if False:
 
 # Let's work on this notion called global variables, which we haven't touched on yet as opposed to local variables.
 # It sits on top of all the functions in a script. It looks like an aspect of the module|library area but they are not.
-
+# To demonstrate that let's terminal code 2_bank.py 
