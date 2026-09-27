@@ -1,0 +1,51 @@
+# For our sleep program let's prompt input for a variable called n;
+def main():
+    n=int(input('What\'s n? '))
+    # This will prompt our user for numbers of sheeps and print sheeps that many times by creating a pyramid.
+    #for i in range(n+1):
+        #print('🐑'*i)
+        #print(sheep(i))
+    for s in sheep(n+1):
+        print(s)
+        # Upto 100 sheets are fine but gets pretty ugly.
+        # 1000 sheeps are extremely ugly! Duh!
+        # 10000 sheeps can take a loot of time!
+        # My computer is gazillion tymes faster than david's lol
+        # 1M sheeps will exhaust my computer so I won't do it, it's alerady pushing david's ram.
+        # Once we cross some threshold the program stops working at all, to print we need to store the data inside ram :/ .
+        # Well my program crashed lol hahahahahahah, 
+        # OMG! my program crashed! my computer also crashed then it force closed the cli by deffault!
+        # So not putting everything in the main() is a good thing because we almost fell asleep just creating some mere sheeps! 
+        # There is a solution to this problem in the form of these generators in python where it can still generate a massive amount of data for your users but we can allow this to generate a little bit of data at a time.
+        # We as a user can definitely generate almost the same way without worrying about crashing, meaning getting too much returned at the same time, see the documentation at <docs.python.org/3/howto/functional.html#generators>.
+        # Let's bring in yield[Remember Chemistry?] keyword. 
+        # So far we have been defining functions with keyword return and if we point back to our custom function def sheep(n) we exhausted the ram using return so let's go back there and implement yield in place of return.
+
+# Let's imagin situations where we get into problem territories
+# We learnt about abstractions whereby creating custom functions we can totally bypass underlying mechanism of the functions and just focus on next levels.
+# We can also error check using test.py lesson philosophies.
+# Let's create a custom function called sheep()
+
+def sheep(n:int):
+    '''
+    Return n number of sheep emojies.
+    '''
+    #return '🐑'*n
+    # Now bro wants to create a flock of sheep, jo that we can nullify the for loop in the main() function.
+    #flock=['🐑'*i for i in range(n)]
+    #return flock
+    # Problem this way we are not doing subsequent returning rather we are returning all at once, which is a huge block!
+    # Let's use yield instead where python returns data in blocks exactly like the buffer size of asio drives. It will keep running but in packets and we can easily stop the side effect anytime we want by force-closing or using a conditional with break loop qualities.
+    # We can use yield here similarly with a little caviat, it's better not to store as a list the humungous data from list compression with iterating that humungous time using list comprehension and then yield it because number of elements is 1 here[1 list with massive size that rram can not handle] and for this we can't utilize the main feature of the yield.
+    # For this we will yield each iteration as follows;
+    for i in range(n):
+        yield '🐑'*i
+        # And it runs like magic
+        # Yield usually runs or generates an iterator[technical term of each of the for loop iterations, a functionality or action so to speak], our for loops iteration line <'🐑'*i>.
+        # So as effect, it is returning one row of sheep at a time[The iterator], not the whole flock and that is why our local machine is not getting exhausted this time, and we seeing a rather chatming animation as side effects.
+        # In reality what is happening under the hood is that the generator is just retaining state for us. It's gonna do one iteration and then yield a result. The python for us is going to suspend the function but will remember on what iteration it was. The next time we iterate over it as it is going to happen again and again in this for loop in main[i forgot there was another for loop in main printing each lines X(] we get back another value again and again and these are happening in separate tics.
+        # So yield returns indeed this thing called an iterator and that iterator can be stepped over as in a loop-one element at a time; all of which is handled for us in the language level by the great gods of Python!!!!! SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS!
+
+# Conclusion
+if __name__=='__main__':
+    main()
