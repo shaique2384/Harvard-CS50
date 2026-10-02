@@ -1,0 +1,8 @@
+#N canvas 400 200 450 300 12;
+#X obj 50 120 netsend;
+#X msg 50 40 connect 127.0.0.1 9002;
+#X floatatom 50 80 5 0 0 0 - - - 0;
+#X text 180 40 <- Click once after starting Python;
+#X text 110 80 <- Drag or type to send to Python;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;

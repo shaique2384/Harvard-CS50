@@ -1,0 +1,5 @@
+#N canvas 400 200 450 300 12;
+#X obj 50 50 netreceive 9001;
+#X floatatom 50 100 5 0 0 0 - - - 0;
+#X text 110 100 <- Value from Python;
+#X connect 0 0 1 0;

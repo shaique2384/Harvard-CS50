@@ -1,0 +1,10 @@
+#N canvas 568 290 450 300 12;
+#X obj 50 80 oscparse;
+#X obj 50 120 route volume;
+#X obj 51 232 vsl 21 179 0 127 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 50 40 netreceive -u -b 8000;
+#X obj 108 227 float;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 1 0 2 0;
+#X connect 3 0 0 0;

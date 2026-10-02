@@ -1,0 +1,31 @@
+<measure number="1">
+  <attributes>
+    <divisions>1</divisions> <!-- Defines a quarter note as 1 time unit -->
+  </attributes>
+  <note>
+    <pitch>
+      <step>C</step>
+      <octave>4</octave>
+    </pitch>
+    <duration>1</duration>
+    <type>quarter</type>
+  </note>
+  <note>
+    <chord/> <!-- Ties this note to the previous one to play simultaneously -->
+    <pitch>
+      <step>E</step>
+      <octave>4</octave>
+    </pitch>
+    <duration>1</duration>
+    <type>quarter</type>
+  </note>
+  <note>
+    <chord/> <!-- Ties this note to the C and E pitches -->
+    <pitch>
+      <step>G</step>
+      <octave>4</octave>
+    </pitch>
+    <duration>1</duration>
+    <type>quarter</type>
+  </note>
+</measure>
