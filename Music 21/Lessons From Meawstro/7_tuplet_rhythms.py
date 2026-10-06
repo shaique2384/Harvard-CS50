@@ -14,6 +14,11 @@ if False:
     my_stream.insert(meter.TimeSignature())
     # Insert Inserts an item(s) at the given offset(s). A review of the library happened;
 
+import os
+os.environ["DISPLAY"] = ":99"
+
+import music21 as m21
+m21.environment.set('musescoreDirectPNGPath', '/usr/bin/mscore3')
 from music21 import*
 '''
 The TimeSignature object represents time signatures in musical scores (4/4, 3/8, 2/4+5/16, Cut, etc.).
@@ -55,4 +60,5 @@ my_measure.insert(0,my_note)
 # Conclusion Block [HARD]
 my_part.insert(0,my_measure)
 my_stream.insert(my_part)
-my_stream.show()
+
+my_stream.show('musicxml.png', fp='7_tuplet_rhythms.py')
