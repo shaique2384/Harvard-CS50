@@ -61,4 +61,5 @@ my_measure.insert(0,my_note)
 my_part.insert(0,my_measure)
 my_stream.insert(my_part)
 
-my_stream.show('musicxml.png', fp='7_tuplet_rhythms.py')
+my_stream.write('musicxml.png', fp='7_tuplet_rhythms2.png')
+my_stream.write('musicxml.png', fp='7_tuplet_rhythms2.musicxml')
