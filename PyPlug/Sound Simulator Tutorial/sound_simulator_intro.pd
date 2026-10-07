@@ -1,0 +1,11 @@
+#N canvas 827 239 734 565 12;
+#X floatatom 136 246 5 0 0 0 - - - 0;
+#X obj 136 48 bng 25 250 50 0 empty empty empty 0 -10 0 10 #191919 #e1e1e1 #e1e1e1;
+#X text 244 134 objects in pd has inlets and outlets \; signal_flow.direction == downward;
+#X text 244 47 It is like a button \, it sends out a bang message \; connecting means patched together;
+#X msg 136 142 42;
+#X text 6 134 takes in bang \; returns message;
+#X text 6 47 takes in bang \; returns bang;
+#X text 6 237 takes in message \; returns message;
+#X connect 1 0 4 0;
+#X connect 4 0 0 0;
