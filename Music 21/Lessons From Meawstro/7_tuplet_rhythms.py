@@ -49,13 +49,53 @@ my_measure.insert(0,my_ts)
 #my_measure.number=16
 
 # Body Block [SOFT]
-my_note=note.Note()
-# Our current focust==rhythm. So .pitch==default
-my_note.duration=duration.Duration(3.25)
-# We have so far dealt with 1/2^n as note length.
-# But we havent yet worked with any duration that breaks away from this conventional mold.
+# Each body block should have mechanisms as sub blocks. For us we are creating different kinds of notes assigning functionalities to them and inserting into my_measure.
 
-my_measure.insert(0,my_note)
+if True:
+    my_note=note.Note()
+    # Our current focust==rhythm. So .pitch==default
+    my_note.duration=duration.Duration(3.25)
+    my_measure.insert(0,my_note)
+
+# We have so far dealt with 1/2^n as note length.
+# But we havent yet worked with any duration that breaks away from this conventional molds.
+# Let's create something using tuplets, 3 1/3 notes
+if True:
+    nBase3=note.Nore()
+    nBase3.duration=duration.Duration(1/3)
+    #my_measure.repeatAppend(mBase3, 3)
+    my_measure.repeatInsert(nBase3, 3)
+
+# We can easily extend this aproach to other tuplet durations, in this case quintuplets.
+# Let's now create three quintuplet note objects and let's assign to their duration.Duration() using keyword duration.
+if True:
+    n1=note.Note(duration=duration.Duration(1/5))
+    n234=note.Note(duration=duration.Duration(3/5))
+    n5=note.Note(duration=duration.Duration(1/5))
+    my_measure.insert(n1,n234,n5)
+
+# We discover in music21 the remarkable ability to wield rhythm with great flexibilty through tuplets such as 5 subdivisions within the customary span of 4.
+# We might however wish to push the bounderies further still with the subdivision of five within the space of three or seven within the space of five leading us into the territory of what some call irrational rhythms a terrain often traversed by   those Avant Guard composers like Brian Ferow, James Dylan and Michael Finnessy who are associated with the so called new complexity movement. 
+#In music21 tuplets are defined by their own dedicated class and we can utilize it to create tuplets with even more control and flexibility.
+# Let's translate a traditional composer's 'workflow into the realms of python and music21 and show strength as well as limitations.
+if True:
+    # Let's first create a tuplet object called my tuplet and as arguments let's provide integer values of five and three; representing the number of subdivisions we desire and the number of usual subdivisions.
+    my_tuplet=duration.Tuplet(5,3) 
+    # It's an object inheriting from the duration class and objects.
+    # Whenever we introduce an irrational rhythm it is customary to display their ratio in notation within brackets above so.
+    # We can do this by introducing the tupletNormalShow attriput of the tuplet object and assign 'number'
+    my_tuplet.tupletNormalShow='number'
+    # We have a tuplet object but we don't have a note yet so let's create one into niTuplet short for noteIrrationalTuplet 
+    niTuplet=note.Note()
+    # The note automatically has a default duration object nested and we can easily append our tuplet object into the notes duration attribute[somehow the duration object and variables are nested in the class bock, I don't knopw yet] using appendTuplet().
+    niTuplet.duration.appendTuplet(my_tuplet)
+    # Let's now repeatAppend and repeatInsert niTuplet into my_measure and check while running in codespace which one works and to what extent.
+    my_measure.repeatAppend(niTuplet, 5)
+    # repeatAppend() has (items, numberOfTimes) as args
+    my_measure.repeatInsert(niTuplet, 5)
+    # repeatInsert() has (items, offsets) as args so it should mess up.
+    # Let's find out which stream objects allow append and which allow only inserts.
+
 
 # Conclusion Block [HARD]
 my_part.insert(0,my_measure)
