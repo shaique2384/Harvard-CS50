@@ -41,8 +41,11 @@ TimeSignatures should be present in the first Measure of each Part that they app
 # Let's Follow above regulations.
 
 # Introfuction Block [HARD]
-my_score=stream.Score()
+my_stream=stream.Stream()
 my_part=stream.Part()
+
+
+
 
 
 # Body Block [SOFT]
@@ -56,12 +59,11 @@ if True:
     my_measure=stream.Measure()
     my_ts=meter.TimeSignature('3/4')
     my_measure.insert(0,my_ts)
-    my_note=note.Note(duration=duration.Duration(3))
+    my_note=note.Note(duration=duration.Duration(3.25))
     # Our current focust==rhythm. So .pitch==default
-    my_measure.insert(my_note)
+    my_measure.append(my_note)
     #my_measure.number=16
-    my_part.insert(my_measure)
-
+    my_part.insert(0,my_measure)
 
 # We have so far dealt with 1/2^n as note length.
 # But we havent yet worked with any duration that breaks away from this conventional molds.
@@ -146,7 +148,7 @@ def meter_impulse_m(m:int,n:int)->stream.Measure:
     '''
     Creates a new measure containing m impulses within the n note meter
     '''
-
+    '''
     custom_m=stream.Measure()
     custom_m.remove(clef.TrebleClef())
     # We need to hard code the meter denominator as it can not be other than 2^Z, let's pick Z=-3
@@ -163,16 +165,16 @@ def meter_impulse_m(m:int,n:int)->stream.Measure:
     custom_nit.duration.appendTuplet(custom_t)
     custom_m.repeatAppend(custom_nit,m)
     return custom_m
-
+    '''
+    ...
+    
 # Let's create a meter_impulse_m() taking in different values of tuplets as p,q and create complexity in the step by step manner.
     
 def meter_impulse_p(m:int,n:int,part:stream.Part())->stream.Part:
-    
     '''
     Creates a new measure containing m impulses within the n note meter and isert into a given stream.part() object.
     '''
-
-
+    '''
     custom_m=stream.Measure()
     custom_m.remove(clef.TrebleClef())
     custom_ts=meter.TimeSignature(f'{m}/8')
@@ -188,7 +190,8 @@ def meter_impulse_p(m:int,n:int,part:stream.Part())->stream.Part:
     custom_m.repeatAppend(custom_nit,m)
     part.insert(custom_m)
     return part
-
+    '''
+    ...
 
 ## *This is a projects*
 # Goal would be to create a loop with yield instead of a return and also creating more complexity by adding args and kwargs in the fumctions geowing microphases inside each unitMacroPhases.  
@@ -201,7 +204,7 @@ def selfSimilarTupletSystem(density_range:list,meter_range:list,part_input:strea
     :part_input: stream.Part() provided. The system comprising measures will be inserted into the part and returned.
     :rtype: stream.Part()
     '''
-
+    '''
     #densityMeasuresNumber=x
     #x=int(input('Number of Measures in Density Cycles: '))
     #meterMeasuresNumber=y
@@ -217,13 +220,14 @@ def selfSimilarTupletSystem(density_range:list,meter_range:list,part_input:strea
             uMp=meter_impulse_m(x,y)
             part_input.insert(uMp)
             if x==densityMax:
-                x-=(dMax-dMin-dStep)
+                x-=(dMax-dMin-dStep
             if y==mMax:
                 y-=(mMax-mMin-mStep)
         x+=dStep
         y+=mStep
     return part_input
-
+    '''
+    ...
     
 def impulses_in_meter_p():
     ...
@@ -233,7 +237,7 @@ def impulses_in_meter(meter_numerator:int,n_impulses:int)->stream.Measure:
     '''
     Creates a new measure containing n impulses within the specified eighth note meter.
     '''
-
+    '''
     # Create a measure object to contain the impulses
     combined_measure=stream.Measure()
     # Within music21 each new measure object is assigned as appropriate clef when created. But in this program we will ultimately combine multiple measures within a single stream.
@@ -262,6 +266,8 @@ def impulses_in_meter(meter_numerator:int,n_impulses:int)->stream.Measure:
     # Append n impulses using stream.Measure() object's repeatAppend method to our combined_measure and return it.
     combined_measure.repeatAppend(current_note,n_impulses)
     return combined_measure
+    '''
+    ...
 
 # Let's now collect 4 measures conttaining the tuplets as unit macroPhases themselves. We will call them uMp.
 if False:
@@ -311,16 +317,15 @@ if False:
                 n-=3
             impulses_in_meter(impulse_cycle[n],meter_cycle[i])
             n+=1
-
-
+             
 # Conclusion Block [HARD]
-my_score.insert(my_part)
+my_stream.insert(my_part)
 #my_stream.write('musicxml.png', fp='7_tuplet_rhythms2.png')
 #my_stream.write('musicxml.png', fp='7_tuplet_rhythms2.musicxml')
 
 # Test juno inline render
 #import music21
-#from music21 import converter,ipython21
+from music21 import converter,ipython21
 
 # Create stream
 #s=music21.converter.parse('tiniNotation: 3/4 c4 d e f2.')
@@ -334,10 +339,9 @@ my_score.insert(my_part)
 #my_stream = music21.converter.parse('tinyNotation: 3/4 c4 d e f2.')
 
 # Export as MusicXML (creates output.xml in your working directory)
-my_score.write('musicxml', fp='output2.xml')
+my_stream.write('musicxml', fp='output.xml')
 
 # Export as MIDI
-my_score.write('midi', fp='output2.mid')
+my_stream.write('midi', fp='output.mid')
 
-my_score.show('txt')
-print("Export2 complete!")
+print("Export complete!")
