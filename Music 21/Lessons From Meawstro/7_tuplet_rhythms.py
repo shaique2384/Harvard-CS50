@@ -52,7 +52,7 @@ my_part=stream.Part()
 ## everything in note class creation and manipulation, 
 ## measure append|insertion
 ## part append|insertion
-if True:
+if False:
     my_measure=stream.Measure()
     my_ts=meter.TimeSignature('3/4')
     my_measure.insert(0,my_ts)
@@ -70,11 +70,11 @@ if False:
     my_measure=stream.Measure()
     my_ts=meter.TimeSignature('3/4')
     my_measure.insert(0,my_ts)
-    nBase3=note.Nore()
+    nBase3=note.Note()
     nBase3.duration=duration.Duration(1/3)
-    #my_measure.repeatAppend(mBase3, 3)
-    my_measure.repeatInsert(nBase3, 3)
-    my_part.inser(0,my_measure)
+    my_measure.repeatAppend(nBase3, 3)
+    #my_measure.repeatInsert(nBase3, [0,1,2])
+    my_part.insert(0,my_measure)
 
 # We can easily extend this aproach to other tuplet durations, in this case quintuplets.
 # Let's now create three quintuplet note objects and let's assign to their duration.Duration() using keyword duration.
@@ -85,8 +85,8 @@ if False:
     n1=note.Note(duration=duration.Duration(1/5))
     n234=note.Note(duration=duration.Duration(3/5))
     n5=note.Note(duration=duration.Duration(1/5))
-    my_measure.insert(n1,n234,n5)
-    my_part.inser(0,my_measure)
+    my_measure.append([n1,n234,n5])
+    my_part.insert(0,my_measure)
 
 # We discover in music21 the remarkable ability to wield rhythm with great flexibilty through tuplets such as 5 subdivisions within the customary span of 4.
 # We might however wish to push the bounderies further still with the subdivision of five within the space of three or seven within the space of five leading us into the territory of what some call irrational rhythms a terrain often traversed by   those Avant Guard composers like Brian Ferow, James Dylan and Michael Finnessy who are associated with the so called new complexity movement. 
@@ -107,13 +107,13 @@ if False:
     # The note automatically has a default duration object nested and we can easily append our tuplet object into the notes duration attribute[somehow the duration object and variables are nested in the class bock, I don't knopw yet] using appendTuplet().
     niTuplet.duration.appendTuplet(my_tuplet)
     # Let's now repeatAppend and repeatInsert niTuplet into my_measure and check while running in codespace which one works and to what extent.
-    my_measure.repeatAppend(niTuplet, 5)
+    my_measure.repeatAppend(niTuplet,5)
     # repeatAppend() has (items, numberOfTimes) as args
-    my_measure.repeatInsert(niTuplet, 5)
+    #my_measure.repeatInsert(3,niTuplet,5)
     # repeatInsert() has (items, offsets) as args so it should mess up.
     # Let's find out which stream objects allow append and which allow only inserts.
     # With this knowledge creating rhythms inside of our tuplet is also straightforward.
-    my_part.inser(0,my_measure) 
+    my_part.insert(0,my_measure) 
     
 # Suppose this time we want to create a rhythm comprising of an 8th note followed by a dotted quarter note and another 8th note in total 5 8th notes(1/8+1.5/4+1/8=5/8) within the customary span of 3. 
 if False:
@@ -129,12 +129,14 @@ if False:
     # So if integer inputs are as duration.Tuplet(m,n) this m:n is a blueprint like ratio operating on the total querterLength of the tuplet[tupletSystemDuration= sum(quarterLength of notes '.'appendeTuplet'ed')*(n/m)]. This Total is the duration of my_tuplet tuplet system's duration in the entirity of the measure. For this case it is one dotter quarter note and the remaining quarternote is empty in the m1.
     #'Dividing this tuplet duration by n gives us the interlocking real part of the poly rhythm while m gives us the syncopated complex part of the polyrhythm. 
     # appendTuplet() section;
-    nit1.duration.appendTuplet(my_tuplet)
-    nit234.duration.appendTuplet(my_tuplet)
-    nit5.duration.appendTuplet(my_tuplet)
+    nit1.duration.appendTuplet(t2)
+    nit234.duration.appendTuplet(t2)
+    nit5.duration.appendTuplet(t2)
+    nitList=[nit1,nit234,nit5]
     # On the contrary, insert is when we wan't to feed numeric input as offsets, problematic as they are deppendent on the previous note objects so that nesting regulations don't break.
-    my_measure.append(nit1,nit234,nit5)
-    my_part.inser(0,my_measure)
+    # Both append and isert works where insert is just adding offsets onto it, if we wanna play with rests, for jazz. But if we have sequence of notes we need to pack them as an iterator and append or insert[sometimes insert causes problem, use append then] using for loop.
+    my_measure.append(nitList)
+    my_part.insert(0,my_measure)
     
 
 # [custom function territory]
@@ -212,11 +214,11 @@ def selfSimilarTupletSystem(density_range:list,meter_range:list,part_input:strea
     mMin=meter_range[0]
     y=mMin
     mMax,mStep=meter_range[1],meter_range[2]
-    for _ in range((densityMax-densityMin)*(meterMax-meterMin)):
+    for _ in range((dMax-dMin)*(mMax-mMin)):
         if 4<=x<=7 and 3<=y<=5:
             uMp=meter_impulse_m(x,y)
             part_input.insert(uMp)
-            if x==densityMax:
+            if x==dMax:
                 x-=(dMax-dMin-dStep)
             if y==mMax:
                 y-=(mMax-mMin-mStep)
@@ -225,7 +227,34 @@ def selfSimilarTupletSystem(density_range:list,meter_range:list,part_input:strea
     return part_input
 
     
-def impulses_in_meter_p():
+def cycleRangeToPart(dR:list,mR:list,pI:stream.Part())->stream.Part:
+    '''
+    Takes in lists comprising of brians density and meter cycle's minimum, maximum and step as first and second arguments. Thirs argument is the stream.part() provided by the user
+    :dR: A list of three int type elements as min, max and step of the density cycle.
+    :mR: A list of three int type elements as min, max and step of the meter cycle.
+    :pIt: stream.Part() provided. The system comprising measures will be inserted into the part and returned.
+    :rtype: stream.Part()
+    '''
+    meter_cycle=[]
+    if (mR[1]-mR[0])%mR[2]!=0 or (dR[1]-dR[0])%dR[2]!=0:
+        raise ValueError('Range must be an Integer multiple of the Step value. Input 1 as Step value or change the length of Range accordingly')
+        
+    for i in range( mR[1]-mR[0]+1):
+        meter_cycle.append(mR[0])
+        mR[0]+=mR[2]
+
+    density_cycle=[]
+    for i in range(dR[1]-dR[0]+1):
+        density_cycle.append(dR[0])
+        dR[0]+=dR[2]
+
+    meter_cycles=meter_cycle*len(density_cycle)
+    density_cycles=density_cycle*len(meter_cycle)
+
+    combined_cycles_measures=list(map(impulses_in_meter,meter_cycles,density_cycles))
+    pI.append(combined_cycles_measures)
+    return pI
+    
     ...
     
 # Now let's carbon copy our mewstro's custom func.
@@ -270,7 +299,8 @@ if False:
     uMp2=meter_impulse_m(5,4)
     uMp3=meter_impulse_m(6,5)
     uMp4=meter_impulse_m(7,3)
-    my_part.insert(uMp1,uMp2,uMp3,uMp4)
+    my_part.append([uMp1,uMp2,uMp3,uMp4])
+    # So both measure and part objects takes a list as append.
 
 # Let's summon brian's part into our system;
 if False:
@@ -296,7 +326,7 @@ if False:
     # Both has equal number of elements == len(meter_cycle)*len(impulse_cycle)
 
     # Part takes both items and lists as input for our case it is a list of measures returned by mapping impulses_in_meter() function.
-    my_part.insert(combined_cycles_measures)
+    my_part.append(combined_cycles_measures)
 
 
 # Shaique's Magic Loop from impulses_in_meter()
@@ -305,14 +335,24 @@ if False:
     meter_cycle=[3,4,5]
     impulse_cycle=[4,5,6,7]
     n=0
-    for _ in len(impulse_cycle):
+    for _ in range(len(impulse_cycle)):
         for i in meter_cycle:
             if n>=3:
                 n-=3
-            impulses_in_meter(impulse_cycle[n],meter_cycle[i])
+            impulses_in_meter(impulse_cycle[n],i)
             n+=1
-
-
+if True:
+    mRange=[
+        int(input('Meter Cycle Starts at Number: ')),
+        int(input('Meter Cycle Ends at Number: ')),
+        int(input('Meter Cycle Step Value: '))
+        ]
+    dRange=[
+        int(input('Density Cycle Starts at Number: ')),
+        int(input('Density Cycle Ends at Number: ')),
+        int(input('Density Cycle Step Value: '))
+        ]
+    my_part=cycleRangeToPart(mRange,dRange,my_part)
 # Conclusion Block [HARD]
 my_score.insert(my_part)
 #my_stream.write('musicxml.png', fp='7_tuplet_rhythms2.png')
@@ -334,10 +374,10 @@ my_score.insert(my_part)
 #my_stream = music21.converter.parse('tinyNotation: 3/4 c4 d e f2.')
 
 # Export as MusicXML (creates output.xml in your working directory)
-my_score.write('musicxml', fp='output2.xml')
+my_score.write('musicxml', fp='my_code_creation.xml')
 
 # Export as MIDI
-my_score.write('midi', fp='output2.mid')
+#my_score.write('midi', fp='output2.mid')
 
-my_score.show('txt')
-print("Export2 complete!")
+#my_score.show('txt')
+print("Export complete!")
