@@ -327,6 +327,7 @@ if False:
 
     # Part takes both items and lists as input for our case it is a list of measures returned by mapping impulses_in_meter() function.
     my_part.append(combined_cycles_measures)
+    # List taken by .append() not .insert()
 
 
 # Shaique's Magic Loop from impulses_in_meter()
