@@ -37,9 +37,11 @@
 | Definite Integral | `$\int_{a}^{b}$` | $\int_{a}^{b}$ |
 | Partial Derivative | `$\partial$` | $\partial$ |
 | Gradient / Nabla | `$\nabla$` | $\nabla$ |
+| Sigmoid | `$\sigma$` | $\sigma$ |
 | Summation | `$\sum$` | $\sum$ |
 | Product | `$\prod$` | $\prod$ |
 | Limit | `$\lim_{x \to \infty}$` | $\lim_{x \to \infty}$ |
+| Approaches | `$\rightarrow$` | $\rightarrow$ |
 
 ## 4. Set Theory & Logic
 
@@ -77,6 +79,7 @@
 | Symbol | Markdown/LaTeX | Output |
 | :--- | :--- | :--- |
 | Vector | `$\vec{v}$` or `$\mathbf{v}$` | $\vec{v}$ |
+| Vector(Math-Bold)|`$\mathbf{v}$` | $\mathbf{v}$ |
 | Dot Product | `$\cdot$` | $\cdot$ |
 | Cross Product | `$\times$` | $\times$ |
 | Matrix (Brackets) | `$$\begin{bmatrix} a & b \\ c & d \end{bmatrix}$$` | See below |
@@ -94,3 +97,15 @@ $$
 | Integers | `$\mathbb{Z}$` | $\mathbb{Z}$ |
 | Rational Numbers | `$\mathbb{Q}$` | $\mathbb{Q}$ |
 | Natural Numbers | `$\mathbb{N}$` | $\mathbb{N}$ |
+
+## 8. Misceleneous
+
+| Symbol | Markdown/:LaTeX | Output |
+| :--- | :--- | :--- |
+| Underscripts and Superscripts | `$\sum_{i=1}^{n} x_i$` | $\sum_{i=1}^{n} x_i$ |
+| With Fraction | `$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$` | $\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$ |
+| BlackBoard Format | `$\mathbb{R}^n$` | $\mathbb{R}^n$ |
+
+$\mathbf{v} = \begin{bmatrix} v_1 & w_1 \\ v_2 & w_2 \\ \vdots & \vdots\\ v_n & w_n \end{bmatrix}$
+
+$$\vec{v} = \begin{bmatrix} a_1 & b_1 & \cdots & z_1 \\ a_2 & b_2 & \cdots & z_2 \\ \vdots & \vdots & \ddots & \vdots \\ a_n & b_n & \cdots & z_n \end{bmatrix}$$
