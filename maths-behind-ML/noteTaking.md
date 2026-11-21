@@ -175,3 +175,6 @@ $$
 - 
 - Calculating Derrivatives 
 - Gradient Descent
+
+Do $\begin{bmatrix} a_1x_1 & a_1x_2\\a_2x_1 & a_2x_2\\a_3x_1 & a_3x_2\\\end{bmatrix}$ and 
+$\begin{bmatrix} a_1 \begin{bmatrix} x_1 & x_2 \end{bmatrix}\\a_2\begin{bmatrix} x_1 & x_2 \end{bmatrix}\\a_3\begin{bmatrix} x_1 & x_2 \end{bmatrix}\end{bmatrix}$ mean same? Yes
