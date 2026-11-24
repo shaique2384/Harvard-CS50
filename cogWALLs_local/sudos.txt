@@ -1,0 +1,178 @@
+# system
+cat /etc/os-release
+nvidia-smi
+tar -xf <file.tar.(xz|gz)>
+unzip -o "ffmpeg_encoder_plugin.dvcp.bundle.zip" -d <UNZIP_DESTINATION>
+cd ~/.local/share/applications
+nano ~/.local/share/applications/plugdata.desktop
+df -h
+lsblk
+du -sh /mnt/music/Uploads
+```Nano```
+[Desktop Entry]
+Type=Application
+Name=PlugData
+Comment=Visual patcher and plugin environment
+Exec=/home/shaique2384/plugdata/Standalone/plugdata
+Icon=/home/shaique2384/plugdata/Standalone/icon.png
+Terminal=false
+Categories=AudioVideo;Audio;Midi;
+```CTL O, CTL X```
+chmod +x ~/.local/share/applications/plugdata.desktop
+sudo apt update
+sudo apt install bluez bluetooth blueman -y
+sudo systemctl enable --now bluetooth.service
+# Bluetuth GUI 
+blueman-manager
+
+# Headless Rustdesk xorg configuration
+sudo nano /etc/X11/xorg.conf
+```Nano```
+Section "ServerLayout"
+    Identifier     "Layout0"
+    Screen      0  "Screen0" 0 0
+EndSection
+
+Section "Files"
+EndSection
+
+Section "Monitor"
+    Identifier     "Monitor0"
+    VendorName     "Unknown"
+    ModelName      "Unknown"
+    HorizSync      28.0 - 140.0
+    VertRefresh    50.0 - 75.0
+EndSection
+
+Section "Device"
+    Identifier     "Device0"
+    Driver         "nvidia"
+    VendorName     "NVIDIA Corporation"
+    BoardName      "NVIDIA GeForce RTX 3060 Ti"
+    Option         "ConnectedMonitor" "HDMI-0"
+    Option         "AllowEmptyInitialConfiguration" "True"
+    Option         "ModeValidation" "NoDFPNativeResolutionCheck, AllowNonEDIDModes"
+EndSection
+
+Section "Screen"
+    Identifier     "Screen0"
+    Device         "Device0"
+    Monitor        "Monitor0"
+    DefaultDepth   24
+    Option         "MetaModes" "HDMI-0: 3840x2160 +0+0, HDMI-0: 2360x1640 +0+0"
+    SubSection     "Display"
+        Depth      24
+        Modes      "3840x2160" "2360x1640"
+    EndSubSection
+EndSection
+```CTL O, CTL X```
+sudo systemctl restart lightdm
+
+# Manually Updating The Ipad Res
+xrandr --newmode "2360x1640_60.00"  315.00  2360 2552 2816 3248  1640 1643 1648 1693 -hsync +vsync
+xrandr --addmode HDMI-0 "2360x1640_60.00"
+xrandr --output HDMI-0 --mode "2360x1640_60.00"
+
+# Autostart with Upddated Ipad Res
+mkdir -p ~/.config/autostart
+ls -ld ~/.config/autostart
+nano ~/.config/autostart/xrandr-ipad.desktop
+```Nano```
+[Desktop Entry]
+Type=Application
+Name=Set iPad Resolution
+Exec=sh -c 'xrandr --newmode "2360x1640_60.00" 315.00 2360 2552 2816 3248 1640 1643 1648 1693 -hsync +vsync && xrandr --addmode HDMI-0 "2360x1640_60.00" && xrandr --output HDMI-0 --mode "2360x1640_60.00"'
+X-GNOME-Autostart-enabled=true
+```CTL O, CTL X```
+
+# Check local network connectivity and packet loss to your workstation
+hostname -I
+ping -c 4 <WORKSTATION_IP>
+
+# Restart Rustdesk
+sudo systemctl status rustdesk
+sudo systemctl enable --now rustdesk
+
+# Look through the output for HDMI ports
+xrandr
+
+# Checks all the audio hardwares
+fuser -v /dev/snd/*
+sudo alsa force-reload
+# Restart Pipewire For Reaper
+systemctl --user restart pipewire pipewire-pulse wireplumber
+
+# Demucs Workflow
+source ~/demucs-env/bin/activate
+cd "~/Downloads/From YouTube"
+yt-dlp -x --audio-format wav -P "~/Downloads/From YouTube" "https://www.youtube.com/watch?v=wEPKIulCEhQ"
+demucs -d cuda -n htdemucs_6s "Tip Tip Brishty - Fuad.(mp3|wav)"
+# For Practice and mp3
+yt-dlp -x --audio-format mp3 --audio-quality 320k -P "~/Downloads/From YouTube" "<URL>" 
+demucs -d cuda -n htdemucs_6s --mp3 "Tip Tip Brishty - Fuad.mp3" 
+
+# DaVinci Projects
+~/.local/share/DaVinciResolve/Resolve Disk Database/
+ffmpeg -i story_caption.mov -c:v prores_ks -profile:v 2 -c:a pcm_s24le -ar 48000 /mnt/music/uploads/story_caption_prores.mov
+yt-dlp -P "~/Downloads/from_youtube/video" --merge-output-format mp4 "URL"
+ffmpeg -i /mnt/music/uploads/story.mov -c:v libx264 -crf 18 -preset slow -c:a aac -b:a 320k /mnt/music/uploads/story_output.mp4
+# Gpu
+ffmpeg -i /mnt/software/video.mov -vf format=yuv420p -c:v h264_nvenc -cq 19 -preset p7 -c:a aac -b:a 320k /mnt/music/uploads/video_output.mp4
+mkdir -p ffmpeg_encoder_plugin.dvcp.bundle
+unzip -o "ffmpeg_encoder_plugin.dvcp.bundle.zip" -d <UNZIP_DESTINATION>
+sudo mkdir -p /opt/resolve/IOPlugins/
+sudo mv ffmpeg_encoder_plugin.dvcp.bundle /opt/resolve/IOPlugins/
+```FIX```
+nano ~/resolve-launch.sh
+```Nano```
+#!/bin/bash
+export LD_PRELOAD=/usr/lib/libglib-2.0.so.0:/usr/lib/libgobject-2.0.so.0:/usr/lib/libgio-2.0.so.0:/usr/lib/libgmodule-2.0.so.0
+export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
+exec /opt/resolve/bin/resolve "$@"
+```crl o, ctl x```
+# Make the script executable by changing its file permissions
+chmod +x ~/resolve-launch.sh
+# Run ```ls -l ~/resolve-launch.sh``` and ensure the output displays an x in the permissions string (e.g., -rwxr-xr-x)
+~/resolve-launch.sh
+# If it doesn't work from app manager
+sudo mv ~/resolve-launch.sh /usr/local/bin/resolve-launch
+
+
+```git | code```
+# git push pull from cogWALLs
+cd "/mnt/music/PHD Prep/Harvard CS50/Harvard-CS50"
+git config --global user.name "Md Shaique Ali"
+git config --global user.email "your-github-email@example.com"
+git pull origin main --rebase
+git push origin main
+# 1. Remove the accidental nested .venv inside bin/ and return to the cuda directory
+rm -rf .venv && cd ..
+
+# 2. Rename the folder containing spaces to use an underscore instead
+deactivate 2>/dev/null
+cd ../..
+mv "Python Testing" Python_Testing
+cd Python_Testing/cuda
+
+# 3. Inspect the old hardcoded path inside your virtual environment scripts
+head -n 3 bin/jupyter
+
+# 4. Update the old hardcoded path across all scripts in bin/ (skipping subdirectories)
+find bin -maxdepth 1 -type f -exec sed -i 's|/mnt/music/PHD Prep/Harvard CS50/Harvard-CS50|/mnt/music/PHD_Prep/github/cogWALLs2384|g' {} +
+
+# 5. Refresh the terminal session, clear cached paths, and verify jupyter
+deactivate 2>/dev/null; source bin/activate
+hash -r
+which jupyter
+
+# 6. Register the cuda virtual environment as a Jupyter kernel
+./bin/python -m ipykernel install --user --name=cuda --display-name="Python (cuda)"
+
+# 7. Stop the stale Dev Container and disable auto-container launch in VS Code
+cd /mnt/music/PHD_Prep/github/cogWALLs2384
+docker rm -f 445842ea0175
+mv .devcontainer .devcontainer.bak
+
+# 8. Open the updated local repository directly in VS Code
+code .
+```end```
